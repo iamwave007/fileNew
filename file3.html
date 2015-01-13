@@ -1,0 +1,27 @@
+<style>
+  .thumb {
+    height: 75px;
+    border: 1px solid #000;
+    margin: 10px 5px 0 0;
+  }
+</style>
+<img src="">
+<input type='file' multiple id='files'>
+<script type="text/javascript">
+  document.getElementById('files').addEventListener('change',read,false);
+  function read(e){
+    var file = e.target.files;
+    for(var i=0,file;file=files[i];i++){
+      if(!file.type.match('image.*')){
+        continue;
+      }
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onLoad=(function(theFile){
+        console.log(theFile)
+
+      })
+    }
+
+  }
+</script>

@@ -1,0 +1,53 @@
+<style>
+  .thumb {
+    height: 75px;
+    border: 1px solid #000;
+    margin: 10px 5px 0 0;
+  }
+</style>
+
+<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<div id='drop'>Drop works with Div!!!!</div>
+<!-- <input type='file' id='files' multiple /> -->
+<output id="list"></output>
+<script >
+  document.getElementById('drop').addEventListener('dragover',dragFunction,false);
+  document.getElementById('drop').addEventListener('drop',dropFunction,false);
+  function dragFunction(e){
+    e.stopPropagation();
+    e.preventDefault();
+    e.dataTransfer.dropEffect='copy';
+  }
+  function dropFunction(e){
+    e.stopPropagation();
+    e.preventDefault();
+    var files = e.dataTransfer.files;
+    console.log(files);
+    for(var i=0,f;f=files[i];i++){
+      if(!f.type.match('image.*')){
+        continue;
+      }
+      var reader = new FileReader();
+      reader.readAsDataURL(f);
+      reader.onload=(function(theFile){
+        return function(e){
+          var span = document.createElement('span');
+          span.innerHTML=['<img class="thumb" src="', e.target.result,
+                            '" title="', escape(theFile.name), '"/>'].join('');
+          document.getElementById('list').insertBefore(span,null);
+        }
+      })(f);
+      
+      
+    }
+  }
+</script>
+
+
+
+
+
+
+
+
+

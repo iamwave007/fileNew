@@ -1,0 +1,50 @@
+<style>
+  .thumb {
+    height: 75px;
+    border: 1px solid #000;
+    margin: 10px 5px 0 0;
+  }
+</style>
+
+<input type='file' id='files' multiple />
+<output id="list"></output>
+<script type="text/javascript">
+  
+  function read(e){
+    var files = e.target.files;
+    for(var i=0,f;f=files[i];i++){
+      if(!f.type.match('image.*')){
+        continue;
+      }
+      var reader = new FileReader();
+      reader.readAsDataURL(f);
+      reader.onload=(function(theFile){
+        return function(e){
+          var span = document.createElement('span');
+          span.innerHTML=['<img class="thumb" src="', e.target.result,
+                            '" title="', escape(theFile.name), '"/>'].join('');
+          document.getElementById('list').insertBefore(span,null);
+        }
+      })(f);
+      
+      
+    }
+  }
+  document.getElementById('files').addEventListener('change',read,false);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
