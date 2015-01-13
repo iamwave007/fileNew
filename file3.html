@@ -1,27 +1,45 @@
-<style>
-  .thumb {
-    height: 75px;
-    border: 1px solid #000;
-    margin: 10px 5px 0 0;
-  }
-</style>
-<img src="">
-<input type='file' multiple id='files'>
-<script type="text/javascript">
-  document.getElementById('files').addEventListener('change',read,false);
-  function read(e){
-    var file = e.target.files;
-    for(var i=0,file;file=files[i];i++){
-      if(!file.type.match('image.*')){
-        continue;
-      }
-      var reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onLoad=(function(theFile){
-        console.log(theFile)
 
-      })
+
+<link rel="stylesheet" href="css/html5demos.css">
+<script src="js/h5utils.js"></script></head>
+<body>
+<section id="wrapper">
+
+<article>
+  <p id="status">File API & FileReader API not supported</p>
+  <p><input type=file></p>
+  <p>Select an image from your machine to read the contents of the file without using a server</p>
+  <div id="holder"></div>
+</article>
+<script>
+var upload = document.getElementsByTagName('input')[0],
+    holder = document.getElementById('holder'),
+    state = document.getElementById('status');
+
+if (typeof window.FileReader === 'undefined') {
+  state.className = 'fail';
+} else {
+  state.className = 'success';
+  state.innerHTML = 'File API & FileReader available';
+}
+ 
+upload.onchange = function (e) {
+  e.preventDefault();
+
+  var file = upload.files[0],
+      reader = new FileReader();
+  reader.onload = function (event) {
+    var img = new Image();
+    img.src = event.target.result;
+    // note: no onload required since we've got the dataurl...I think! :)
+    if (img.width > 560) { // holder width
+      img.width = 560;
     }
+    holder.innerHTML = '';
+    holder.appendChild(img);
+  };
+  reader.readAsDataURL(file);
 
-  }
+  return false;
+};
 </script>
